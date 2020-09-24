@@ -1,0 +1,332 @@
+{
+	"info": {
+		"_postman_id": "c05e6db3-ee82-4a62-afe9-d16aeabd7fab",
+		"name": "task 2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create wallet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "70465175-23f5-427f-8a5e-82b48888ed1d",
+						"exec": [
+							"\r",
+							" response = pm.response.json();\r",
+							"pm.test (\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"BTC\", function(){\r",
+							"    pm.expect(pm.response.json().wallet_id).to.include('BTC');\r",
+							"})\r",
+							"pm.test(\"Length is 53\", function(){\r",
+							"    pm. expect(pm.response.json().wallet_id).to.have.lengthOf(53);\r",
+							"})\r",
+							"\r",
+							"pm.environment.set (\"wallet_id\", response.wallet_id)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{value}}/create/wallet",
+					"host": [
+						"{{value}}"
+					],
+					"path": [
+						"create",
+						"wallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Wallet state",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6f6c6b87-b3a9-4a3d-baf3-85b883ff0049",
+						"exec": [
+							" response = pm.response.json();\r",
+							"pm.test (\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Data\", function(){\r",
+							"    console.log(new Date()-pm.response.json().create_date_timestamp)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Access-Nonce",
+						"value": "1111111111111",
+						"type": "text"
+					},
+					{
+						"key": "Access-Signature",
+						"value": "2222222222222",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.bitaps.com/btc/testnet/v1/wallet/state/BTCvgE8515pcfE4jEzGKK9YLukKEgTLnZsKtXzhp8zMzyhWj5bfmT",
+					"protocol": "https",
+					"host": [
+						"api",
+						"bitaps",
+						"com"
+					],
+					"path": [
+						"btc",
+						"testnet",
+						"v1",
+						"wallet",
+						"state",
+						"BTCvgE8515pcfE4jEzGKK9YLukKEgTLnZsKtXzhp8zMzyhWj5bfmT"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e4da1da9-7aa4-452d-acc7-50d03819dcf9",
+						"exec": [
+							"response = pm.response.json();\r",
+							"pm.test (\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"response should be okay to process\", function () {\r",
+							"    pm.response.to.not.be.error;\r",
+							"    \r",
+							"});\r",
+							"pm.test(\"BTC\", function(){\r",
+							"    pm.expect(pm.response.json().currency).to.include('BTC');\r",
+							"})\r",
+							"\r",
+							"pm.environment.set (\"address\", response.address)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"wallet_id\": \"BTCvgE8515pcfE4jEzGKK9YLukKEgTLnZsKtXzhp8zMzyhWj5bfmT\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.bitaps.com/btc/testnet/v1/create/wallet/payment/address",
+					"protocol": "https",
+					"host": [
+						"api",
+						"bitaps",
+						"com"
+					],
+					"path": [
+						"btc",
+						"testnet",
+						"v1",
+						"create",
+						"wallet",
+						"payment",
+						"address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transactions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "10e0b89c-256b-4cc5-ab2b-e808422235d3",
+						"exec": [
+							" response = pm.response.json();\r",
+							"pm.test (\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"pm.test(\"response should be okay to process\", function () {\r",
+							"    pm.response.to.not.be.error;   \r",
+							"});\r",
+							"pm.test(\"environment\", function () {\r",
+							"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"Task\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Access-Nonce",
+						"value": "1234567890",
+						"type": "text"
+					},
+					{
+						"key": "Access-Signature",
+						"value": "money",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{value}}/wallet/transactions/{{wallet_id}}?from=1600416947&to=1601453747&limit=10&page=1",
+					"host": [
+						"{{value}}"
+					],
+					"path": [
+						"wallet",
+						"transactions",
+						"{{wallet_id}}"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "1600416947"
+						},
+						{
+							"key": "to",
+							"value": "1601453747"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c567285e-d2ae-4230-81e4-3fe88f4a7f98",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Payment-Code",
+						"value": "000000",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{value}} /payment/address/callback/log/{{address}}?limit=10&page=1",
+					"host": [
+						"{{value}} "
+					],
+					"path": [
+						"payment",
+						"address",
+						"callback",
+						"log",
+						"{{address}}"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
